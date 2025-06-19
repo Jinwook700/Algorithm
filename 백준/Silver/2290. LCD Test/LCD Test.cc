@@ -2,6 +2,32 @@
 #include <vector>
 using namespace std;
 
+void length(vector<vector<char>>& v, int a, int b, int middle, int row, int cul, int num, bool isLeft)
+{
+    for (int i=1; i<row - 1; i++)
+        {
+            if (num == 0 && i == (middle)) break;
+            else if (num == 1 && i < middle) continue;
+            else if (i == middle) continue;
+            if (isLeft) v[b+i][a] = '|';
+            else v[b+i][a+cul - 2] = '|';
+        }
+}
+
+void width(vector<vector<char>>& v, int a, int middle, int row, int cul, bool one, bool two, bool three)
+{
+    for (int j=0; j<row; j += middle)
+        {
+            for (int k=1; k<cul-2; k++)
+                {
+                    if (!one && j == 0) continue;
+                    if (!two && j == middle) continue;
+                    if (!three && j == middle * 2) continue;
+                    v[j][a + k] = '-';
+                }
+        }
+}
+
 int main() {
     int s; string n; cin >> s >> n;
     int row = 2*s + 3;
@@ -14,195 +40,59 @@ int main() {
     for (int i=0; i<n.length(); i++)
         {
             a = tempA;
-            b = 0;
-            if (n[i] == '1')
-            {
-                for (int i=1; i<row - 1; i++)
-                    {
-                        if (i == (middle)) continue;
-                        v[b+i][a+cul - 2] = '|';
-                    }
-            }
+            if (n[i] == '1') 
+                length(v, a, b, middle, row, cul, 2, false);
             else if (n[i] == '2')
             {
-                for (int i=1; i<row - 1; i++)
-                    {
-                        if (i == (middle)) break;
-                        v[b+i][a+cul - 2] = '|';
-                    }
-
-                for (int i=1; i<row - 1; i++)
-                    {
-                        if (i <= middle) continue;
-                        v[b+i][a] = '|';
-                    }
-                
-                for (int j=0; j<row; j += middle)
-                    {
-                        for (int k=1; k<cul-2; k++)
-                            {
-                                v[j][a + k] = '-';
-                            }
-                    }
-                
+                length(v, a, b, middle, row, cul, 1, true);
+                length(v, a, b, middle, row, cul, 0, false);
+                width(v, a, middle, row, cul, true, true, true);
             }
             else if (n[i] == '3')
             {
-                for (int i=1; i<row - 1; i++)
-                    {
-                        if (i == (middle)) continue;
-                        v[b+i][a+cul - 2] = '|';
-                    }
-                
-                for (int j=0; j<row; j += middle)
-                    {
-                        for (int k=1; k<cul-2; k++)
-                            {
-                                v[j][a + k] = '-';
-                            }
-                    }
+                length(v, a, b, middle, row, cul, 2, false);
+                width(v, a, middle, row, cul, true, true, true);
             }
             else if (n[i] == '4')
             {
-                for (int i=1; i<row - 1; i++)
-                    {
-                        if (i == (middle)) continue;
-                        v[b+i][a+cul - 2] = '|';
-                    }
-                
-                for (int i=1; i<row - 1; i++)
-                    {
-                        if (i == middle) break;
-                        v[b+i][a] = '|';
-                    }
-                for (int k=1; k<cul-2; k++)
-                    {
-                                v[middle][a + k] = '-';
-                    }
-                
+                length(v, a, b, middle, row, cul, 0, true);
+                length(v, a, b, middle, row, cul, 2, false);
+                width(v, a, middle, row, cul, false, true, false);
             }
             else if (n[i] == '5')
             {
-                for (int i=1; i<row - 1; i++)
-                    {
-                        if (i == (middle)) break;
-                        v[b+i][a] = '|';
-                    }
-
-                for (int i=1; i<row - 1; i++)
-                    {
-                        if (i <= middle) continue;
-                        v[b+i][a+cul - 2] = '|';
-                    }
-                
-                for (int j=0; j<row; j += middle)
-                    {
-                        for (int k=1; k<cul-2; k++)
-                            {
-                                v[j][a + k] = '-';
-                            }
-                    }
+                length(v, a, b, middle, row, cul, 0, true);
+                length(v, a, b, middle, row, cul, 1, false);
+                width(v, a, middle, row, cul, true, true, true);
             }
             else if (n[i] == '6')
             {
-                for (int i=1; i<row - 1; i++)
-                    {
-                        if (i == (middle)) continue;
-                        v[b+i][a] = '|';
-                    }
-
-                for (int i=1; i<row - 1; i++)
-                    {
-                        if (i <= middle) continue;
-                        v[b+i][a+cul - 2] = '|';
-                    }
-                
-                for (int j=0; j<row; j += middle)
-                    {
-                        for (int k=1; k<cul-2; k++)
-                            {
-                                v[j][a + k] = '-';
-                            }
-                    }
+                length(v, a, b, middle, row, cul, 2, true);
+                length(v, a, b, middle, row, cul, 1, false);
+                width(v, a, middle, row, cul, true, true, true);
             }
             else if (n[i] == '7')
             {
-                for (int i=1; i<row - 1; i++)
-                    {
-                        if (i == (middle)) continue;
-                        v[b+i][a+cul - 2] = '|';
-                    }
-
-                for (int k=1; k<cul-2; k++)
-                    {
-                                v[0][a + k] = '-';
-                    }
+                length(v, a, b, middle, row, cul, 2, false);
+                width(v, a, middle, row, cul, true, false, false);
             }
             else if (n[i] == '8')
             {
-                for (int i=1; i<row - 1; i++)
-                    {
-                        if (i == (middle)) continue;
-                        v[b+i][a] = '|';
-                    }
-
-                for (int i=1; i<row - 1; i++)
-                    {
-                        if (i == middle) continue;
-                        v[b+i][a+cul - 2] = '|';
-                    }
-                
-                for (int j=0; j<row; j += middle)
-                    {
-                        for (int k=1; k<cul-2; k++)
-                            {
-                                v[j][a + k] = '-';
-                            }
-                    }
+                length(v, a, b, middle, row, cul, 2, true);
+                length(v, a, b, middle, row, cul, 2, false);
+                width(v, a, middle, row, cul, true, true, true);
             }
             else if (n[i] == '9')
             {
-                for (int i=1; i<row - 1; i++)
-                    {
-                        if (i == (middle)) break;
-                        v[b+i][a] = '|';
-                    }
-
-                for (int i=1; i<row - 1; i++)
-                    {
-                        if (i == middle) continue;
-                        v[b+i][a+cul - 2] = '|';
-                    }
-                
-                for (int j=0; j<row; j += middle)
-                    {
-                        for (int k=1; k<cul-2; k++)
-                            {
-                                v[j][a + k] = '-';
-                            }
-                    }
+                length(v, a, b, middle, row, cul, 0, true);
+                length(v, a, b, middle, row, cul, 2, false);
+                width(v, a, middle, row, cul, true, true, true);
             }
             else if (n[i] == '0')
             {
-                for (int i=1; i<row - 1; i++)
-                    {
-                        if (i == (middle)) continue;
-                        v[b+i][a] = '|';
-                    }
-
-                for (int i=1; i<row - 1; i++)
-                    {
-                        if (i == middle) continue;
-                        v[b+i][a+cul - 2] = '|';
-                    }
-                
-                for (int j=0; j<row; j += middle * 2)
-                    {
-                        for (int k=1; k<cul-2; k++)
-                            {
-                                v[j][a + k] = '-';
-                            }
-                    }
+                length(v, a, b, middle, row, cul, 2, true);
+                length(v, a, b, middle, row, cul, 2, false);
+                width(v, a, middle, row, cul, true, false, true);
             }
             tempA += cul;
         }
