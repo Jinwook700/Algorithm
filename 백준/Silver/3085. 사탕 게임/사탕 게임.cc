@@ -3,8 +3,45 @@
 #include <algorithm>
 using namespace std;
 
+void checkRow(vector<vector<char>>& v, char& cell1, char& cell2, int N, int& count)
+{
+    swap(cell1, cell2);
+    for (int i=0; i<N; i++)
+        {
+            char before = v[i][0];
+            int value = 0;
+            for (int j=0; j<N; j++)
+            {
+                if (v[i][j] == before) value++;
+                else value = 1;
+                if (value > count) count = value;
+                before = v[i][j];
+            }
+        }
+    swap(cell1, cell2);
+}
+
+void checkCul(vector<vector<char>>& v, char& cell1, char& cell2, int N, int& count)
+{
+    swap(cell1, cell2);
+    for (int m=0; m<N; m++)
+        {
+            char before = v[0][m];
+            int value = 0;
+            for (int n=0; n<N; n++)
+                {
+                    if (v[n][m] == before) value++;
+                    else value = 1;
+                    if (value > count) count = value;
+                    before = v[n][m];
+                }
+        }
+    swap(cell1, cell2);
+}
+
 int main() {
     int N; cin >> N;
+
     vector<vector<char>> v(N, vector<char>(N));
     for (int i=0; i<N; i++)
         {
@@ -13,7 +50,6 @@ int main() {
                     cin >> v[i][j];
                 }
         }
-    vector<vector<char>> origin(v);
 
     int count = 0;
     for (int k=0; k<N; k++)
@@ -22,66 +58,14 @@ int main() {
                 {
                     if (l < N - 1)
                     {
-                        swap(v[k][l], v[k][l+1]);
-                        for (int i=0; i<N; i++)
-                            {
-                                char before = v[i][0];
-                                int value = 0;
-                                for (int j=0; j<N; j++)
-                                    {
-                                        if (v[i][j] == before) value++;
-                                        else value = 1;
-                                        if (value > count) count = value;
-                                        before = v[i][j];
-                                    }
-                            }
-
-                        for (int m=0; m<N; m++)
-                            {
-                                char before = v[0][m];
-                                int value = 0;
-                                for (int n=0; n<N; n++)
-                                    {
-                                        if (v[n][m] == before) value++;
-                                        else value = 1;
-                                        if (value > count) count = value;
-                                        before = v[n][m];
-                                    }
-                            }
+                        checkRow(v, v[k][l], v[k][l+1], N, count);
+                        checkCul(v, v[k][l], v[k][l+1], N, count);
                     }
-                    v = origin;
-                    
                     if (k < N - 1)
                     {
-                        swap(v[k][l], v[k+1][l]);
-                        for (int i=0; i<N; i++)
-                            {
-                                char before = v[i][0];
-                                int value = 0;
-                                for (int j=0; j<N; j++)
-                                    {
-                                        if (v[i][j] == before) value++;
-                                        else value = 1;
-                                        if (value > count) count = value;
-                                        before = v[i][j];
-                                    }
-                            }
-
-                        for (int m=0; m<N; m++)
-                            {
-                                char before = v[0][m];
-                                int value = 0;
-                                for (int n=0; n<N; n++)
-                                    {
-                                        if (v[n][m] == before) value++;
-                                        else value = 1;
-                                        if (value > count) count = value;
-                                        before = v[n][m];
-                                    }
-                            }
-                        
+                        checkRow(v, v[k][l], v[k+1][l], N, count);
+                        checkCul(v, v[k][l], v[k+1][l], N, count);
                     }
-                    v = origin;
                 }
         }
     cout << count;
