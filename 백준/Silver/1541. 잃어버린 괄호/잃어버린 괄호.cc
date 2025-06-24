@@ -2,6 +2,12 @@
 #include <vector>
 using namespace std;
 
+void function(vector<int>& v, string& str)
+{
+    v.push_back(stoi(str));
+    str = "";
+}
+
 int main()
 {
     string str; cin >> str;
@@ -14,24 +20,11 @@ int main()
         if (c == '-' && Plus)
         {
             Plus = false;
-            vPlus.push_back(stoi(num));
-            num = "";
+            function(vPlus, num);
         }
-        else if (c == '-' && !Plus)
-        {
-            vMinus.push_back(stoi(num));
-            num = "";
-        }
-        else if (c == '+' && Plus)
-        {
-            vPlus.push_back(stoi(num));
-            num = "";
-        }
-        else if (c == '+' && !Plus)
-        {
-            vMinus.push_back(stoi(num));
-            num = "";
-        }
+        else if (c == '-' && !Plus) function(vMinus, num);
+        else if (c == '+' && Plus) function(vPlus, num);
+        else if (c == '+' && !Plus) function(vMinus, num);
         else num += c;
     }
     if (Plus) vPlus.push_back(stoi(num));
