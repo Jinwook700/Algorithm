@@ -20,7 +20,6 @@ int main()
             if (st.empty() || num > st.top())
             {
                 int j = maxValue + 1;
-                if (j == n + 1) flag = false;
                 for (; j<=num; j++)
                     {
                         st.push(j);
