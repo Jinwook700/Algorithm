@@ -1,48 +1,35 @@
 #include <iostream>
 #include <vector>
-#include <algorithm>
 using namespace std;
 
 int main()
 {
     int N; cin >> N;
-    vector<int> line(N-1);
-    vector<int> price(N);
-    vector<bool> check(N);
-    for (int i=0; i<N-1; i++) cin >> line[i];
-    for (int i=0; i<N; i++) cin >> price[i];
-    vector<int> priceList(price.begin(), price.end());
-    sort(priceList.begin(), priceList.end());
-    int leastPrice = priceList[0];
-
-    int beforePos = 0;
-    int beforePrice = price[0];
-    int nextPrice = 0;
+    vector<pair<long long, long long>> v(N);
+    for (int i=0; i<N -1; i++)
+        {
+            long long distance; cin >> distance;
+            v[i].second = distance;
+        }
     for (int i=0; i<N; i++)
         {
-            nextPrice = price[i];
-            if (nextPrice < beforePrice && i != N-1)
-            {
-                check[beforePos] = true;
-                beforePos = i;
-            }
+            long long price; cin >> price;
+            v[i].first = price;
         }
 
-    int sum = 0;
-    for (int i=0; i<N-1; i++)
+    long long total = 0;
+    long long dis = v[0].second;
+    long long beforePrice = v[0].first;
+    for (int i=1; i<N; i++)
         {
-            if (price[i] == leastPrice)
+            if (v[i].first <= beforePrice)
             {
-                for (int j = i; j<N-1; j++)
-                    {
-                        sum += leastPrice*line[j];
-                        //cout << "min sum : " << sum << "\n";
-                    }
-                break;
+                total += dis * beforePrice;
+                beforePrice = v[i].first;
+                dis = 0;
             }
-            if (check[i]) beforePrice = price[i];
-            sum += beforePrice * line[i];
-            //cout << "sum : " << sum << "\n";
+            dis += v[i].second;
         }
-    cout << sum;
+    total += dis * beforePrice;
+    cout << total;
 }
